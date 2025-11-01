@@ -1,0 +1,66 @@
+<div class="card">
+  <div class="card-header text-center">
+    <h3>Pujas</h3>
+  </div>
+
+  <div class="card-body">
+    <div id="card_lista">
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Subasta</th>
+            <th>Usuario</th>
+            <th class="text-end">Monto</th>
+            <th class="text-center">
+              <button type="button" class="btn btn-success" onclick="abrirModalPuja()">
+                <i class="fa-solid fa-plus"></i> Nueva Puja
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody id="tbody_pujas"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card-footer text-center">
+    <button type="button" class="btn btn-danger" onclick="salir_formulario()">
+      <i class="fa-solid fa-right-from-bracket"></i> Salir
+    </button>
+  </div>
+</div>
+
+<!-- 🔹 MODAL PUJAR -->
+<div class="modal fade" id="modalPuja" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title">Realizar Puja</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="id_subasta">
+        <div class="form-floating mb-2">
+          <input type="text" class="form-control" id="titulo_subasta" readonly>
+          <label for="titulo_subasta">Subasta</label>
+        </div>
+
+        <div class="form-floating mb-2">
+          <input type="number" class="form-control" id="monto" placeholder="Monto ofertado" min="0">
+          <label for="monto">Monto</label>
+          <small id="minimoLabel" class="text-warning"></small>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnGuardarPuja">
+          <i class="fa-solid fa-floppy-disk"></i> Ofertar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="./frm/transacciones/pujas/index.js"></script>

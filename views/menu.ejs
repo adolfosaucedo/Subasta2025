@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subasta</title>
+  <link rel="shortcut icon" href="favicon.png" type="image/png" />
+  <link rel="stylesheet" href="./css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./css/all.min.css" />
+  <link rel="stylesheet" href="./css/menu.css" />
+  <script src="./js/bootstrap.bundle.min.js" defer></script>
+  <script src="./js/menu.js" defer></script>
+</head>
+
+<body data-bs-theme="dark">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#">SUBASTAS</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="menu-dinamico"></ul>
+        <button id="btn-login" class="btn btn-outline-warning ms-auto">Ingresar</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-3" id="panel-formulario">
+    <div class="alert alert-secondary text-center">
+      Bienvenido al sistema de Subastas
+    </div>
+  </div>
+
+  <!-- MODAL LOGIN -->
+  <div class="modal fade" id="modalLogin" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title">Iniciar Sesión</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" class="form-control" id="loginEmail">
+          </div>
+          <div class="mb-3">
+            <label>Contraseña</label>
+            <input type="password" class="form-control" id="loginPassword">
+          </div>
+          <div id="loginError" class="text-danger small mb-2"></div>
+        </div>
+        <div class="modal-footer d-flex flex-column">
+          <div class="w-100 d-flex justify-content-between mb-2">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button class="btn btn-warning" id="btnConfirmLogin">Ingresar</button>
+          </div>
+          <button class="btn btn-link text-info" id="btnToRegister">Usuario nuevo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL REGISTRO -->
+  <div class="modal fade" id="modalRegistro" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title">Registro de Usuario</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2"><label>Nombre</label><input type="text" class="form-control" id="regNombre"></div>
+          <div class="mb-2"><label>Email</label><input type="email" class="form-control" id="regEmail"></div>
+          <div class="mb-2"><label>Contraseña</label><input type="password" class="form-control" id="regPass1"></div>
+          <div class="mb-2"><label>Confirmar contraseña</label><input type="password" class="form-control"
+              id="regPass2"></div>
+          <div id="regError" class="text-danger small mb-2"></div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-success" id="btnConfirmRegister">Registrarse</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./js/scripts.js" defer></script>
+</body>
+
+</html>

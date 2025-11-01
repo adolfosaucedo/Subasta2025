@@ -1,0 +1,147 @@
+/* ===============================
+   NAVBAR GENERAL
+   =============================== */
+.navbar {
+  background-color: #1c1c1e !important;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.1);
+}
+
+.navbar-brand {
+  color: #f5f5f5 !important;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  transition: color 0.3s ease-in-out;
+}
+
+.navbar-brand:hover {
+  color: #ffd700 !important; /* dorado */
+}
+
+/* ===============================
+   NAV-LINKS Y DROPDOWNS
+   =============================== */
+.navbar-nav .nav-link {
+  color: #ddd !important;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ffd700 !important;
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
+}
+
+/* Dropdown */
+.dropdown-menu {
+  background-color: #2b2b2e;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.dropdown-item {
+  color: #eaeaea !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 215, 0, 0.15);
+  color: #ffd700 !important;
+  padding-left: 1.3rem;
+}
+
+/* ===============================
+   BOTONES DE SESIÓN
+   =============================== */
+#btn-login {
+  font-weight: 600;
+  border-radius: 20px;
+  padding: 6px 18px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Botón Ingresar (dorado) */
+.btn-outline-warning {
+  border: 1px solid #ffd700;
+  color: #ffd700;
+}
+
+.btn-outline-warning:hover {
+  background-color: #ffd700;
+  color: #000;
+}
+
+/* Botón Cerrar Sesión (rojo) */
+/* Botón Cerrar Sesión — versión fija sin animaciones */
+.btn-danger {
+  border-radius: 20px;
+  padding: 6px 18px;
+  background-color: #dc3545 !important; /* rojo sólido */
+  color: #fff !important; /* texto blanco */
+  border: none !important; /* sin borde */
+  transition: none !important; /* sin animación */
+  box-shadow: none !important; /* sin sombra */
+}
+
+/* Estado hover sin transición */
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active {
+  background-color: #c82333 !important; /* rojo un poco más oscuro */
+  color: #fff !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ===============================
+   EFECTOS Y TRANSICIONES
+   =============================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===============================
+   RESPONSIVE
+   =============================== */
+@media (max-width: 991px) {
+  .navbar-nav .nav-link {
+    padding: 10px;
+  }
+  #btn-login {
+    margin-top: 8px;
+    width: 100%;
+  }
+}
+
+/* ===============================
+   CUADRO DE BIENVENIDA
+   =============================== */
+#panel-formulario .alert {
+  background-color: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: #ffd700;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* ===============================
+   ESTILO GENERAL DEL BODY
+   =============================== */
+body {
+  background-color: #121212;
+  color: #f1f1f1;
+  font-family: "Segoe UI", "Roboto", sans-serif;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}

@@ -1,0 +1,90 @@
+<div class="card">
+    <div class="card-header text-center">
+        <h3>Pagos</h3>
+    </div>
+
+    <div class="card-body">
+        <!-- 🔍 Buscador -->
+        <div class="input-group mb-3">
+            <input id="texto_buscar_pagos" type="text" class="form-control"
+                placeholder="Buscar por adjudicación o nombre...">
+            <button class="btn btn-warning" type="button" id="boton_texto_buscar_pagos" onclick="buscar_pagos()">
+                <i class="fa-solid fa-magnifying-glass"></i> Buscar
+            </button>
+        </div>
+
+        <!-- 📋 Tabla de pagos -->
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Adjudicación</th>
+                    <th>Método</th>
+                    <th class="text-end">Monto</th>
+                    <th>Estado</th>
+                    <th class="text-center">
+                        <button type="button" class="btn btn-success" onclick="abrirModalPago()">
+                            <i class="fa-solid fa-plus"></i> Nuevo Pago
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="tbody_pagos"></tbody>
+        </table>
+    </div>
+
+    <div class="card-footer text-center">
+        <button type="button" class="btn btn-danger" onclick="salir_formulario()">
+            <i class="fa-solid fa-right-from-bracket"></i> Salir
+        </button>
+    </div>
+</div>
+
+<!-- 🧾 MODAL PAGO -->
+<div class="modal fade" id="modalPago" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalPagoTitulo">Registrar Pago</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="form_pago">
+          <input type="hidden" id="id_pago" />
+
+          <div class="form-floating mb-2">
+            <select id="select_adjudicacion" class="form-select" required>
+              <option value="">Seleccione una adjudicación</option>
+            </select>
+            <label for="select_adjudicacion">Adjudicación</label>
+          </div>
+
+          <div class="form-floating mb-2">
+            <select id="metodo_pago" class="form-select">
+              <option value="tarjeta">Tarjeta</option>
+              <option value="transferencia">Transferencia</option>
+              <option value="efectivo">Efectivo</option>
+              <option value="pagopar">Pagopar</option>
+              <option value="otro" selected>Otro</option>
+            </select>
+            <label for="metodo_pago">Método de pago</label>
+          </div>
+
+          <div class="form-floating mb-2">
+            <input type="text" id="monto_pago" class="form-control text-end" placeholder="Monto" readonly />
+            <label for="monto_pago">Monto (Gs.)</label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" onclick="guardar_pago()">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script src="./frm/transacciones/pagos/index.js"></script>

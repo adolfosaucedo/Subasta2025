@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subasta</title>
+  <link rel="shortcut icon" href="favicon.png" type="image/png" />
+  <link rel="stylesheet" href="./css/bootstrap.min.css" />
+  <script src="./js/bootstrap.bundle.min.js" defer></script>
+  <script src="./js/menu-dinamico.js" defer></script>
+  <style>
+    #btn-login.btn-danger {
+      background-color: #dc3545 !important;
+      color: #fff !important;
+      border: none !important;
+      transition: none !important;
+      box-shadow: none !important;
+    }
+    #btn-login.btn-danger:hover {
+      background-color: #c82333 !important;
+      color: #fff !important;
+    }
+  </style>
+</head>
+
+<body data-bs-theme="dark">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="/">SUBASTA</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- 🟢 Ítems del menú -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="menu-dinamico"></ul>
+
+        <!-- 🟡 Login / Panel / Logout según sesión -->
+        <% if (!user) { %>
+          <div class="ms-auto d-flex">
+            <a id="btn-login" href="/login" class="btn btn-outline-warning me-2">Ingresar</a>
+            <button id="btn-open-register" type="button" class="btn btn-success">Registrarse</button>
+          </div>
+        <% } else { %>
+          <div class="ms-auto d-flex">
+            <a href="/panel" class="btn btn-success me-2">Ir al Panel</a>
+            <a href="/logout" class="btn btn-outline-danger">Salir</a>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CARRUSEL PRINCIPAL -->
+  <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0"
+              class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"
+              aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2"
+              aria-label="Slide 3"></button>
+    </div>
+
+    <div class="carousel-inner">
+      <!-- SLIDE 1 -->
+      <div class="carousel-item active">
+        <img src="./img/carousel/1.jpg" class="d-block w-100" alt="Subasta digital" />
+        <div class="carousel-caption d-none d-md-block">
+          <h3 class="fw-bold text-white text-shadow">Plataforma Inteligente de Subastas Digitales</h3>
+          <p class="fw-bold text-white text-shadow">Un sistema automatizado que facilita la compra y venta transparente de bienes en tiempo real.</p>
+        </div>
+      </div>
+      <!-- SLIDE 2 -->
+      <div class="carousel-item">
+        <img src="./img/carousel/2.jpg" class="d-block w-100" alt="Gestión segura" />
+        <div class="carousel-caption d-none d-md-block">
+          <h3 class="fw-bold text-white text-shadow">Gestión Segura y Eficiente</h3>
+          <p class="fw-bold text-white text-shadow">Control total de usuarios, bienes y pujas mediante roles y validaciones automatizadas.</p>
+        </div>
+      </div>
+      <!-- SLIDE 3 -->
+      <div class="carousel-item">
+        <img src="./img/carousel/3.jpg" class="d-block w-100" alt="Innovación académica" />
+        <div class="carousel-caption d-none d-md-block">
+          <h3 class="fw-bold text-white text-shadow">Innovación Académica y Tecnológica</h3>
+          <p class="fw-bold text-white text-shadow">Desarrollada como parte de la tesis universitaria, integrando Node.js, Express y MariaDB.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controles -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
+  </div>
+
+  <div class="alert alert-warning text-center mb-1" role="alert">
+    SUBASTAS DISPONIBLES
+  </div>
+
+  <!-- LISTA DE SUBASTAS (server-side) -->
+  <div id="lista-subastas" class="row row-cols-1 row-cols-md-4 g-4 text-center">
+    <% if (subastas && subastas.length > 0) { %>
+      <% subastas.forEach(s => { %>
+        <div class="col">
+          <div class="card h-100 shadow-sm">
+            <img src="<%= s.imagen_url_bien || './img/bienes/0.png' %>" class="card-img-top" alt="Bien" />
+            <div class="card-body">
+              <h5 class="card-title"><%= s.titulo_bien %></h5>
+              <p class="card-text">Precio base: Gs. <%= Number(s.precio_base).toLocaleString() %></p>
+              <p class="card-text"><small>Inicio: <%= new Date(s.fecha_inicio).toLocaleDateString('es-PY') %></small></p>
+              <p class="card-text"><small>Fin: <%= new Date(s.fecha_fin).toLocaleDateString('es-PY') %></small></p>
+            </div>
+            <div class="card-footer text-center">
+              <% if (!user) { %>
+                <a href="/login" class="btn btn-outline-warning">Ingresar para ofertar</a>
+              <% } else { %>
+                <button class="btn btn-outline-warning" onclick="ofertarSubasta(<%= s.id_subasta %>, <%= s.precio_base %>)">
+                  Ofertar
+                </button>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="col">
+        <div class="alert alert-info">No hay subastas disponibles.</div>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- ===== Inyección de sesión para JS (sin localStorage) ===== -->
+  <script>
+    const LOGGED_IN = <%= user ? 'true' : 'false' %>;
+    const USER = <%- JSON.stringify(user || null) %>;
+  </script>
+
+  <!-- ===== Modal Registro (actualizado) ===== -->
+  <div class="modal fade" id="modalRegistro" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title">Registro de Usuario</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2">
+            <label>Nombres</label>
+            <input type="text" class="form-control" id="regNombre" required />
+          </div>
+          <div class="mb-2">
+            <label>Apellidos</label>
+            <input type="text" class="form-control" id="regApellidos" required />
+          </div>
+          <div class="mb-2">
+            <label>Fecha de nacimiento</label>
+            <input type="date" class="form-control" id="regFechaNac" />
+          </div>
+          <div class="mb-2">
+            <label>Documento (cédula)</label>
+            <input type="text" class="form-control" id="regDocumento" required />
+          </div>
+          <div class="mb-2">
+            <label>Email</label>
+            <input type="email" class="form-control" id="regEmail" required />
+          </div>
+          <div class="mb-2">
+            <label>Teléfono</label>
+            <input type="text" class="form-control" id="regTelefono" required />
+          </div>
+          <div class="mb-2">
+            <label>Contraseña</label>
+            <input type="password" class="form-control" id="regPass1" required />
+          </div>
+          <div class="mb-2">
+            <label>Confirmar contraseña</label>
+            <input type="password" class="form-control" id="regPass2" required />
+          </div>
+
+          <hr class="my-2" />
+
+          <div class="mb-2">
+            <label>Cédula - Frente (JPG/PNG)</label>
+            <input type="file" class="form-control" id="regCedFrente" accept=".jpg,.jpeg,.png" required />
+          </div>
+          <div class="mb-2">
+            <label>Cédula - Reverso (JPG/PNG)</label>
+            <input type="file" class="form-control" id="regCedReverso" accept=".jpg,.jpeg,.png" required />
+          </div>
+
+          <div class="form-check my-2">
+            <input class="form-check-input" type="checkbox" id="regTyC" />
+            <label class="form-check-label" for="regTyC">Acepto los Términos y la Política de Privacidad</label>
+          </div>
+
+          <div id="regError" class="text-danger small mb-2"></div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-success" id="btnConfirmRegister">Registrarse</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal de PENDIENTE de aprobación ===== -->
+  <div class="modal fade" id="modalPendiente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header border-0">
+          <h5 class="modal-title text-warning">Cuenta pendiente de aprobación</h5>
+        </div>
+        <div class="modal-body text-center">
+          <p>Tu cuenta fue registrada correctamente, pero aún no está activa.</p>
+          <p>Un administrador revisará tu solicitud y la aprobará pronto.</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Scripts: abrir registro, registrar usuario, pujas ===== -->
+  <script>
+    // Abrir modal de registro desde navbar
+    const btnOpenReg = document.getElementById('btn-open-register');
+    if (btnOpenReg) {
+      btnOpenReg.addEventListener('click', () => {
+        new bootstrap.Modal(document.getElementById('modalRegistro')).show();
+      });
+    }
+
+    // --- Registro de usuario (POST /api/usuarios) con FormData ---
+    (function attachSafeRegisterHandler() {
+      const oldBtn = document.getElementById('btnConfirmRegister');
+      if (!oldBtn) return;
+
+      // 🔧 Evitar dobles listeners si otro JS (menu-dinamico.js) ya lo enganchó:
+      const newBtn = oldBtn.cloneNode(true);
+      oldBtn.parentNode.replaceChild(newBtn, oldBtn);
+      const btnConfirmRegister = document.getElementById('btnConfirmRegister');
+
+      btnConfirmRegister.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        const nombres = document.getElementById('regNombre').value.trim();
+        const apellidos = document.getElementById('regApellidos').value.trim();
+        const fecha_nacimiento = document.getElementById('regFechaNac').value;
+        const documento = document.getElementById('regDocumento').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const telefono = document.getElementById('regTelefono').value.trim();
+        const pass1 = document.getElementById('regPass1').value;
+        const pass2 = document.getElementById('regPass2').value;
+        const cedFrente = document.getElementById('regCedFrente').files[0];
+        const cedReverso = document.getElementById('regCedReverso').files[0];
+        const tyc = document.getElementById('regTyC').checked ? '1' : '0';
+        const regError = document.getElementById('regError');
+
+        const passOk = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[ !"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]).{8,}$/.test(pass1);
+
+        // Validaciones
+        if (!nombres || !apellidos || !documento || !email || !telefono || !pass1 || !pass2 || !cedFrente || !cedReverso) {
+          regError.textContent = 'Todos los campos y ambos archivos de cédula son obligatorios.';
+          return;
+        }
+        if (pass1 !== pass2) {
+          regError.textContent = 'Las contraseñas no coinciden.';
+          return;
+        }
+        if (!passOk) {
+          regError.textContent = 'La contraseña debe tener 8+ caracteres e incluir mayúscula, minúscula, número y símbolo.';
+          return;
+        }
+        if (tyc !== '1') {
+          regError.textContent = 'Debe aceptar los Términos y la Política de Privacidad.';
+          return;
+        }
+
+        regError.textContent = '';
+
+        try {
+          const fd = new FormData();
+          fd.append('nombres', nombres);
+          fd.append('apellidos', apellidos);
+          fd.append('fecha_nacimiento', fecha_nacimiento);
+          fd.append('documento', documento);
+          fd.append('email', email);
+          fd.append('telefono', telefono);
+          fd.append('password', pass1);
+          fd.append('acepta_politicas', tyc);
+          fd.append('cedula_frente', cedFrente);
+          fd.append('cedula_reverso', cedReverso);
+
+          const resp = await fetch('/api/usuarios', { method: 'POST', body: fd });
+          const json = await resp.json();
+
+          if (json.status === 200) {
+            const mReg = bootstrap.Modal.getInstance(document.getElementById('modalRegistro'));
+            if (mReg) mReg.hide();
+            new bootstrap.Modal(document.getElementById('modalPendiente')).show();
+
+            // limpiar
+            ['regNombre','regApellidos','regFechaNac','regDocumento','regEmail','regTelefono','regPass1','regPass2']
+              .forEach(id => document.getElementById(id).value = '');
+            document.getElementById('regCedFrente').value = '';
+            document.getElementById('regCedReverso').value = '';
+            document.getElementById('regTyC').checked = false;
+          } else {
+            regError.textContent = (json.mensaje || (json.errores && json.errores.join(' • ')) || 'No se pudo registrar.');
+          }
+        } catch (e) {
+          regError.textContent = 'Error de conexión con el servidor.';
+        }
+      });
+    })();
+
+    // Modal de puja
+    function abrirModalPuja() {
+      const modal = new bootstrap.Modal(document.getElementById('modalPuja'));
+      modal.show();
+    }
+
+    // Lógica para ofertar
+    async function ofertarSubasta(id_subasta, valor_minimo) {
+      if (!LOGGED_IN || !USER) {
+        window.location.href = '/login';
+        return;
+      }
+      // guarda datos para la puja en curso
+      window.subasta_actual = { id_subasta, valor_minimo };
+      abrirModalPuja();
+    }
+    window.ofertarSubasta = ofertarSubasta; // expone a onclick
+
+    // Confirmar puja
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnConfirmPuja = document.getElementById('btnConfirmPuja');
+      if (!btnConfirmPuja) return;
+
+      btnConfirmPuja.addEventListener('click', async () => {
+        const monto = parseFloat(document.getElementById('montoPuja').value);
+        const pujaError = document.getElementById('pujaError');
+
+        if (!LOGGED_IN || !USER) { window.location.href = '/login'; return; }
+        if (!window.subasta_actual) { pujaError.textContent = 'No hay subasta activa.'; return; }
+        if (!monto || monto <= 0) { pujaError.textContent = 'Debe ingresar un monto válido.'; return; }
+        if (monto < window.subasta_actual.valor_minimo) {
+          pujaError.textContent = `El monto debe ser ≥ al valor base (Gs. ${Number(window.subasta_actual.valor_minimo).toLocaleString()}).`;
+          return;
+        }
+
+        try {
+          const resp = await fetch('/api/pujas', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              id_subasta: window.subasta_actual.id_subasta,
+              id_usuario: USER.id_usuario, // desde sesión
+              monto
+            }),
+          });
+          const json = await resp.json();
+
+          if (json.status === 200) {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('modalPuja'));
+            if (modal) modal.hide();
+
+            const toast = document.createElement('div');
+            toast.className = 'toast align-items-center text-bg-success border-0 position-fixed top-0 end-0 m-3';
+            toast.innerHTML = `<div class="d-flex">
+              <div class="toast-body">✅ Oferta registrada correctamente.</div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>`;
+            document.body.appendChild(toast);
+            new bootstrap.Toast(toast).show();
+          } else {
+            pujaError.textContent = json.mensaje || 'No se pudo registrar la puja.';
+          }
+        } catch (err) {
+          pujaError.textContent = 'Error de conexión con el servidor.';
+        }
+      });
+    });
+  </script>
+
+  <!-- MODAL DE PUJA -->
+  <div class="modal fade" id="modalPuja" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title">Realizar oferta</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p>Ingrese el monto de su oferta:</p>
+          <input type="number" id="montoPuja" class="form-control mb-3" placeholder="Gs. 0" min="1">
+          <div id="pujaError" class="text-danger small"></div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-warning" id="btnConfirmPuja">Ofertar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-dark text-light py-4 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <h5>Mi Empresa</h5>
+          <p class="small">© 2025 Mi Empresa. Todos los derechos reservados.</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h5>Enlaces</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-light text-decoration-none">Inicio</a></li>
+            <li><a href="#" class="text-light text-decoration-none">Servicios</a></li>
+            <li><a href="#" class="text-light text-decoration-none">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h5>Contacto</h5>
+          <p class="small mb-1">📍 Asunción, Paraguay</p>
+          <p class="small mb-1">📞 +595 999 123 456</p>
+          <p class="small">✉️ contacto@miempresa.com</p>
+        </div>
+      </div>
+
+      <div class="text-center border-top pt-3">
+        <small>Desarrollado con ❤️ usando Bootstrap 5.3</small>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

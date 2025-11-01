@@ -1,0 +1,112 @@
+<div class="card">
+  <div class="card-header text-center">
+    <h3>Bienes</h3>
+  </div>
+
+  <div class="card-body">
+    <!-- 🔹 LISTA DE BIENES -->
+    <div id="card_lista">
+      <div class="input-group mb-3">
+        <input id="texto_buscar_bienes" type="text" class="form-control" placeholder="Buscar ...">
+        <button class="btn btn-warning" type="button" id="boton_texto_buscar_bienes"
+          onclick="buscar_bienes()">
+          <i class="fa-solid fa-magnifying-glass"></i> Buscar
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Título</th>
+              <th>Descripción</th>
+              <th class="text-end">Valor Inicial</th>
+              <th class="text-center">Imagen</th>
+              <th class="text-center" style="width: 180px;">
+                <button type="button" class="btn btn-success btn-sm" onclick="abrirModalAgregar()">
+                  <i class="fa-solid fa-plus"></i> Agregar
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="tbody_bienes"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-footer text-center">
+    <button type="button" class="btn btn-danger" onclick="salir_formulario()">
+      <i class="fa-solid fa-right-from-bracket"></i> Salir
+    </button>
+  </div>
+</div>
+
+<!-- 🔹 MODAL AGREGAR / EDITAR BIEN -->
+<div class="modal fade" id="modalBien" tabindex="-1" aria-labelledby="modalBienLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalBienLabel">Registrar Nuevo Bien</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <input type="hidden" id="id_bien">
+        <div class="form-floating mb-2">
+          <input type="text" class="form-control" id="titulo" placeholder="Título del Bien">
+          <label for="titulo">Título</label>
+        </div>
+
+        <div class="mb-2">
+          <label for="descripcion" class="form-label">Descripción</label>
+          <textarea class="form-control" id="descripcion" rows="3"></textarea>
+        </div>
+
+        <div class="form-floating mb-2">
+          <input type="text" class="form-control" id="valor_inicial" placeholder="Valor Inicial">
+          <label for="valor_inicial">Valor Inicial</label>
+        </div>
+
+        <div class="mb-2">
+          <label for="file_imagen_url" class="form-label">Imagen</label>
+          <input type="file" class="form-control" id="file_imagen_url" accept="image/*">
+          <img id="imagen_url_preview" src="./img/bienes/0.png"
+               class="img-thumbnail mt-2" alt="Vista previa" style="max-height:150px;">
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" id="btnGuardarBien">
+          <i class="fa-solid fa-floppy-disk"></i> Guardar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🔹 MODAL CONFIRMAR ELIMINACIÓN -->
+<div class="modal fade" id="modalConfirmar" tabindex="-1" aria-labelledby="modalConfirmarLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmar eliminación</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p id="texto_confirmacion">¿Desea eliminar este registro?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmarEliminar">
+          <i class="fa-solid fa-trash"></i> Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="./frm/archivos/bienes/index.js"></script>

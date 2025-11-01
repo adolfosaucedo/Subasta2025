@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || 'Ingresar' %> - Subasta</title>
+
+  <!-- Mismos assets que la home -->
+  <link rel="shortcut icon" href="/favicon.png" type="image/png" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <script src="/js/bootstrap.bundle.min.js" defer></script>
+  <script src="/js/menu-dinamico.js" defer></script>
+
+  <style>
+    #btn-login.btn-danger { background-color:#dc3545!important;color:#fff!important;border:none!important;transition:none!important;box-shadow:none!important; }
+    #btn-login.btn-danger:hover { background-color:#c82333!important;color:#fff!important; }
+    .auth-card { max-width: 420px; }
+  </style>
+</head>
+
+<body data-bs-theme="dark">
+  <!-- ======= NAVBAR (igual que index) ======= -->
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="/">SUBASTA</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Menú dinámico (si lo usás) -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="menu-dinamico"></ul>
+
+        <% if (!user) { %>
+          <div class="ms-auto d-flex">
+            <a id="btn-login" href="/login" class="btn btn-outline-warning me-2">Ingresar</a>
+            <button id="btn-open-register" type="button" class="btn btn-success">Registrarse</button>
+          </div>
+        <% } else { %>
+          <div class="ms-auto d-flex">
+            <a href="/panel" class="btn btn-success me-2">Ir al Panel</a>
+            <a href="/logout" class="btn btn-outline-danger">Salir</a>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ======= CUERPO ======= -->
+  <main class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12 auth-card">
+        <div class="card shadow-sm border-0">
+          <div class="card-body bg-dark text-light rounded-3">
+            <h1 class="h4 mb-3 text-center">Iniciar sesión</h1>
+
+            <% if (typeof error === 'string' && error) { %>
+              <div class="alert alert-danger py-2"><%= error %></div>
+            <% } %>
+
+            <form method="POST" action="/login" autocomplete="off" novalidate>
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input name="email" type="email" class="form-control" required />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+                <input name="password" type="password" class="form-control" required />
+              </div>
+
+              <button class="btn btn-warning w-100" type="submit">Ingresar</button>
+            </form>
+
+            <div class="text-center mt-3">
+              <small class="text-secondary">¿No tenés cuenta?</small><br/>
+              <button id="btn-open-register-2" class="btn btn-link text-info p-0">Crear una cuenta</button>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-center text-secondary mt-3 mb-0">
+          © <%= new Date().getFullYear() %> Plataforma de Subastas
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ======= MODAL REGISTRO (mismo que index, para no volver atrás) ======= -->
+  <div class="modal fade" id="modalRegistro" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header">
+          <h5 class="modal-title">Registro de Usuario</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-2"><label>Nombre</label><input type="text" class="form-control" id="regNombre" required /></div>
+          <div class="mb-2"><label>Email</label><input type="email" class="form-control" id="regEmail" required /></div>
+          <div class="mb-2"><label>Teléfono</label><input type="text" class="form-control" id="regTelefono" required /></div>
+          <div class="mb-2"><label>Contraseña</label><input type="password" class="form-control" id="regPass1" required /></div>
+          <div class="mb-2"><label>Confirmar contraseña</label><input type="password" class="form-control" id="regPass2" required /></div>
+          <div id="regError" class="text-danger small mb-2"></div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-success" id="btnConfirmRegister">Registrarse</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= MODAL PENDIENTE ======= -->
+  <div class="modal fade" id="modalPendiente" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header border-0">
+          <h5 class="modal-title text-warning">Cuenta pendiente de aprobación</h5>
+        </div>
+        <div class="modal-body text-center">
+          <p>Tu cuenta fue registrada correctamente, pero aún no está activa.</p>
+          <p>Un administrador revisará tu solicitud y la aprobará pronto.</p>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= JS: abrir registro y registrar (igual que en index) ======= -->
+  <script>
+    // Abrir registro desde los botones de esta página
+    function openRegisterModal() {
+      new bootstrap.Modal(document.getElementById('modalRegistro')).show();
+    }
+    const b1 = document.getElementById('btn-open-register');
+    const b2 = document.getElementById('btn-open-register-2');
+    if (b1) b1.addEventListener('click', openRegisterModal);
+    if (b2) b2.addEventListener('click', openRegisterModal);
+
+    // Validación y envío de Registro a /api/usuarios
+    const btnConfirmRegister = document.getElementById('btnConfirmRegister');
+    if (btnConfirmRegister) {
+      btnConfirmRegister.addEventListener('click', async () => {
+        const nombre = document.getElementById('regNombre').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const telefono = document.getElementById('regTelefono').value.trim();
+        const pass1 = document.getElementById('regPass1').value;
+        const pass2 = document.getElementById('regPass2').value;
+        const regError = document.getElementById('regError');
+
+        const passOk = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[ !"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]).{8,}$/.test(pass1);
+
+        if (!nombre || !email || !pass1 || !pass2) { regError.textContent = 'Todos los campos son obligatorios.'; return; }
+        if (pass1 !== pass2) { regError.textContent = 'Las contraseñas no coinciden.'; return; }
+        if (!passOk) { regError.textContent = 'La contraseña debe tener 8+ caracteres e incluir mayúscula, minúscula, número y símbolo.'; return; }
+
+        regError.textContent = '';
+        try {
+          const resp = await fetch('/api/usuarios', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre, email, telefono, password: pass1 })
+          });
+          const json = await resp.json();
+          if (json.status === 200) {
+            const mReg = bootstrap.Modal.getInstance(document.getElementById('modalRegistro'));
+            if (mReg) mReg.hide();
+            new bootstrap.Modal(document.getElementById('modalPendiente')).show();
+
+            // limpia formulario
+            document.getElementById('regNombre').value = '';
+            document.getElementById('regEmail').value = '';
+            document.getElementById('regTelefono').value = '';
+            document.getElementById('regPass1').value = '';
+            document.getElementById('regPass2').value = '';
+          } else {
+            regError.textContent = (json.mensaje || (json.errores && json.errores.join(' • ')) || 'No se pudo registrar.');
+          }
+        } catch (e) {
+          regError.textContent = 'Error de conexión con el servidor.';
+        }
+      });
+    }
+  </script>
+
+  <footer class="bg-dark text-light py-4 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-3"><h5>Mi Empresa</h5><p class="small">© <%= new Date().getFullYear() %> Mi Empresa. Todos los derechos reservados.</p></div>
+        <div class="col-md-4 mb-3">
+          <h5>Enlaces</h5>
+          <ul class="list-unstyled">
+            <li><a href="/" class="text-light text-decoration-none">Inicio</a></li>
+            <li><a href="#" class="text-light text-decoration-none">Servicios</a></li>
+            <li><a href="#" class="text-light text-decoration-none">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h5>Contacto</h5>
+          <p class="small mb-1">📍 Asunción, Paraguay</p>
+          <p class="small mb-1">📞 +595 999 123 456</p>
+          <p class="small">✉️ contacto@miempresa.com</p>
+        </div>
+      </div>
+      <div class="text-center border-top pt-3"><small>Desarrollado con ❤️ usando Bootstrap 5.3</small></div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,50 @@
+@startuml
+title DFD Nivel 1 - Administrador del Sistema de Subastas Privadas
+
+top to bottom direction
+skinparam ranksep 50
+skinparam nodesep 40
+
+' ==== Entidad externa ====
+rectangle "Administrador" as Admin
+
+' ==== Procesos ====
+circle "1. Gestión de Usuarios y Roles" as P1
+circle "2. Gestión de Bienes y Subastas" as P2
+circle "3. Adjudicación de Bienes" as P3
+circle "4. Registro de Pagos" as P4
+
+' ==== Almacenes de datos ====
+rectangle "D1: Usuarios" as D1
+rectangle "D2: Roles" as D2
+rectangle "D3: Subastas" as D3
+rectangle "D4: Pujas" as D4
+rectangle "D5: Adjudicaciones" as D5
+rectangle "D6: Pagos" as D6
+
+' ==== Flujos de datos ====
+Admin --> P1 : Crear / editar / aprobar usuarios
+P1 --> D1 : Guardar cambios en usuarios
+P1 --> D2 : Asignar roles
+D1 --> P1 : Datos actualizados
+P1 --> Admin : Confirmación de operación
+
+Admin --> P2 : Crear / editar subastas y bienes
+P2 --> D3 : Guardar subastas
+P2 --> D2 : Asociar roles o permisos
+D3 --> P2 : Datos actualizados
+P2 --> Admin : Confirmación / listado de subastas
+
+Admin --> P3 : Seleccionar puja ganadora
+P3 --> D4 : Consultar pujas
+P3 --> D5 : Crear adjudicación
+D5 --> P3 : Confirmación
+P3 --> Admin : Notificación de adjudicación registrada
+
+Admin --> P4 : Registrar pago
+P4 --> D5 : Consultar adjudicaciones
+P4 --> D6 : Guardar pago
+D6 --> P4 : Confirmación
+P4 --> Admin : Pago registrado correctamente
+
+@enduml

@@ -1,0 +1,28 @@
+body {
+    margin: 0;
+    height: 100vh;
+    /* ocupa todo el alto de la ventana */
+    display: flex;
+    justify-content: center;
+    /* centra horizontalmente */
+    align-items: center;
+    /* centra verticalmente */
+}
+
+#form_login {
+    width: 350px;
+    padding: 10px;
+    border: 1px gray solid; 
+    border-radius: 10px;
+    opacity: .7;
+}
+
+#form_login:hover {
+    opacity: 1;
+}
+
+#logo {
+    width: 330px;
+    margin-bottom: 10px;
+    border-radius: 50%;
+}

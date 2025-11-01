@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subasta</title>
+  <link rel="shortcut icon" href="favicon.png" type="image/png">
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/all.min.css">
+  <link rel="stylesheet" href="./css/animate.min.css">
+  <link rel="stylesheet" href="./css/admin.css">
+  <script src="./js/bootstrap.bundle.min.js" defer></script>
+  <script src="./js/scripts.js" defer></script>
+  <script src="./js/admin.js" defer></script>
+</head>
+
+<body data-bs-theme="dark">
+
+  <form id="form_login" class="animate__animated animate__zoomInDown">
+    <img id="logo" src="./img/logo.png" alt="Subasta Logo">
+
+    <div class="form-floating mb-1">
+      <input type="email" class="form-control" id="email" placeholder="name@example.com">
+      <label for="email">Email</label>
+    </div>
+
+    <div class="form-floating mb-1">
+      <input type="password" class="form-control" id="password" placeholder="Password">
+      <label for="password">Password</label>
+    </div>
+
+    <div class="btn-group d-flex" role="group" aria-label="Basic example">
+      <button id="boton_ingresar" type="button" class="btn btn-primary">
+        Ingresar
+      </button>
+      <button id="boton_salir" type="button" class="btn btn-danger" onclick="salir_formulario()">
+        Salir
+      </button>
+    </div>
+
+  </form>
+
+  <div id="panel-mensaje"></div>
+
+</body>
+
+</html>

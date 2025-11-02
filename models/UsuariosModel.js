@@ -4,9 +4,9 @@ import pool from "../databases/ConexionMariaDBProduccion.js";
 const q = async (sql, params = []) => {
   const res = await pool.query(sql, params);
   // mysql2/promise => [rows, fields]
-  if (Array.isArray(res) && Array.isArray(res[0])) return res[0];
+  if (Array.isArray(res)) return res;
   // mariadb u otro wrapper => rows
-  return res;
+  return [res];
 };
 
 export const UsuariosRepo = {
